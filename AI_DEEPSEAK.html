@@ -1,0 +1,795 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Современные BIM решения</title>
+    <style>
+        /* Глобальные стили */
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --blue: #bae5ff;
+            --light-gray: #f5f5f5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--black);
+            line-height: 1.6;
+        }
+
+        /* Шапка сайта */
+        header {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--blue);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+            .nav-links li {
+                margin-left: 2rem;
+            }
+
+            .nav-links a {
+                color: var(--white);
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+                .nav-links a:hover {
+                    color: var(--blue);
+                }
+
+        /* Основное содержимое */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background-color: var(--light-gray);
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+            .hero h1 {
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+                color: var(--black);
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+                max-width: 800px;
+                margin: 0 auto 2rem;
+                color: var(--black);
+            }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--blue);
+            color: var(--black);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+            .btn:hover {
+                background-color: var(--white);
+                box-shadow: 0 0 0 2px var(--blue);
+            }
+
+        /* Секции */
+        .section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+        }
+
+            .section h2 {
+                margin-bottom: 1.5rem;
+                color: var(--black);
+                position: relative;
+                padding-bottom: 0.5rem;
+            }
+
+                .section h2::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 50px;
+                    height: 3px;
+                    background-color: var(--blue);
+                }
+
+        /* Галерея изображений */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            height: 200px;
+            cursor: pointer;
+        }
+
+            .gallery-item:hover {
+                transform: translateY(-5px);
+            }
+
+            .gallery-item img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s;
+            }
+
+            .gallery-item:hover img {
+                transform: scale(1.1);
+            }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--white);
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Модальное окно для изображений */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+
+        .modal-content {
+            display: block;
+            margin: auto;
+            max-width: 90%;
+            max-height: 90%;
+            margin-top: 5%;
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: var(--white);
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Выпадающие списки */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 1rem 0;
+        }
+
+        .dropbtn {
+            background-color: var(--blue);
+            color: var(--black);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+            .dropbtn:hover {
+                background-color: var(--white);
+                box-shadow: 0 0 0 2px var(--blue);
+            }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: var(--white);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+            .dropdown-content a {
+                color: var(--black);
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background-color 0.3s;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: var(--blue);
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* 3D просмотр моделей */
+        .model-container {
+            width: 100%;
+            height: 500px;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #bim-model {
+            width: 100%;
+            height: 100%;
+        }
+
+            #bim-model canvas {
+                display: block;
+                width: 100%;
+                height: 100%;
+                border-radius: 8px;
+            }
+
+        .model-controls {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            z-index: 10;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .model-btn {
+            background-color: var(--blue);
+            color: var(--black);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+            .model-btn:hover {
+                background-color: var(--white);
+                box-shadow: 0 0 0 2px var(--blue);
+            }
+
+        /* Рекламный баннер */
+        .banner {
+            background-color: var(--blue);
+            color: var(--black);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .banner h3 {
+                margin-bottom: 1rem;
+            }
+
+            .banner .close-btn {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                background: none;
+                border: none;
+                font-size: 1.2rem;
+                cursor: pointer;
+                color: var(--black);
+            }
+
+        /* Раздел FAQ */
+        .faq-item {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 1rem;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0.5rem 0;
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.2rem;
+        }
+
+        .faq-item.active .faq-question::after {
+            content: '-';
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+
+        /* Подвал сайта */
+        footer {
+            background-color: var(--black);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin-bottom: 1rem;
+        }
+
+            .footer-links li {
+                margin: 0 1rem;
+            }
+
+            .footer-links a {
+                color: var(--white);
+                text-decoration: none;
+                transition: color 0.3s;
+            }
+
+                .footer-links a:hover {
+                    color: var(--blue);
+                }
+
+        .copyright {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .model-controls {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">BIM Решения</div>
+            <ul class="nav-links">
+                <li><a href="#home">Главная</a></li>
+                <li><a href="#about">О BIM</a></li>
+                <li><a href="#projects">Проекты</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#contact">Контакты</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section id="home" class="hero">
+            <h1>Современные BIM решения для строительства</h1>
+            <p>Используйте технологии информационного моделирования зданий для оптимизации всех этапов строительного процесса</p>
+            <a href="#about" class="btn">Узнать больше</a>
+        </section>
+
+        <!-- Рекламный баннер -->
+        <div class="banner" id="ad-banner">
+            <button class="close-btn" onclick="document.getElementById('ad-banner').style.display='none'">×</button>
+            <h3>Специальное предложение!</h3>
+            <p>Получите бесплатную консультацию по внедрению BIM в ваш проект до конца месяца</p>
+            <a href="#contact" class="btn">Заказать консультацию</a>
+        </div>
+
+        <section id="about" class="section">
+            <h2>Что такое BIM?</h2>
+            <p>Building Information Modeling (BIM) — это процесс создания и управления информацией о строительном объекте на протяжении всего его жизненного цикла. BIM объединяет архитектуру, инженерию и строительство в единую цифровую среду.</p>
+
+            <div class="dropdown">
+                <button class="dropbtn">Преимущества BIM</button>
+                <div class="dropdown-content">
+                    <a href="#">Снижение затрат</a>
+                    <a href="#">Сокращение сроков</a>
+                    <a href="#">Повышение качества</a>
+                    <a href="#">Улучшение координации</a>
+                </div>
+            </div>
+
+            <h3>Наши BIM-услуги</h3>
+            <ul>
+                <li>3D-моделирование</li>
+                <li>Координация проектов</li>
+                <li>4D/5D моделирование</li>
+                <li>BIM-консалтинг</li>
+            </ul>
+        </section>
+
+        <section id="projects" class="section">
+            <h2>Наши проекты</h2>
+            <p>Ознакомьтесь с нашими последними реализованными проектами с использованием BIM-технологий.</p>
+
+            <div class="gallery">
+                <div class="gallery-item" onclick="openModal('images/project1.jpg')">
+                    <img src="images/project1.jpg" alt="BIM проект 1">
+                    <div class="gallery-caption">
+                        <h3>Жилой комплекс "Гринвич"</h3>
+                        <p>Полный цикл BIM-проектирования</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openModal('images/project2.jpg')">
+                    <img src="images/project2.jpg" alt="BIM проект 2">
+                    <div class="gallery-caption">
+                        <h3>Бизнес-центр "Платинум"</h3>
+                        <p>Координация инженерных систем</p>
+                    </div>
+                </div>
+                <div class="gallery-item" onclick="openModal('images/project3.jpg')">
+                    <img src="images/project3.jpg" alt="BIM проект 3">
+                    <div class="gallery-caption">
+                        <h3>Стадион "Арена"</h3>
+                        <p>4D-планирование строительства</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Интерактивная BIM-модель</h2>
+            <p>Исследуйте нашу демонстрационную BIM-модель. Попробуйте различные режимы просмотра.</p>
+
+            <div class="model-container">
+                <div id="bim-model"></div>
+                <div class="model-controls">
+                    <button class="model-btn" onclick="toggleVisibility('arch')">Архитектура</button>
+                    <button class="model-btn" onclick="toggleVisibility('struct')">Конструктив</button>
+                    <button class="model-btn" onclick="toggleVisibility('mep')">Инженерия</button>
+                    <button class="model-btn" onclick="resetCamera()">Сбросить вид</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section">
+            <h2>Наши услуги</h2>
+            <p>Мы предлагаем полный спектр услуг по внедрению и использованию BIM-технологий.</p>
+
+            <div class="dropdown">
+                <button class="dropbtn">Выберите услугу</button>
+                <div class="dropdown-content">
+                    <a href="#">BIM-аудит</a>
+                    <a href="#">Обучение BIM</a>
+                    <a href="#">Разработка BIM-стандартов</a>
+                    <a href="#">BIM-координация</a>
+                    <a href="#">BIM-управление</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="section">
+            <h2>Часто задаваемые вопросы</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">Что такое BIM и чем он отличается от 3D-моделирования?</div>
+                <div class="faq-answer">
+                    <p>BIM (Building Information Modeling) - это не просто 3D-модель здания, а информационная модель, содержащая данные о всех аспектах строительного объекта. В отличие от традиционного 3D-моделирования, BIM включает в себя параметрические данные о материалах, стоимости, сроках эксплуатации и других характеристиках объекта.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Какие преимущества дает внедрение BIM?</div>
+                <div class="faq-answer">
+                    <p>Основные преимущества BIM включают: снижение ошибок проектирования, оптимизацию затрат, сокращение сроков строительства, улучшение координации между участниками проекта, возможность точного планирования и управления объектом на всем его жизненном цикле.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Сколько стоит внедрение BIM в нашей компании?</div>
+                <div class="faq-answer">
+                    <p>Стоимость внедрения BIM зависит от многих факторов: размера компании, текущего уровня технологической готовности, масштабов проектов, выбранного программного обеспечения. Мы предлагаем индивидуальный подход к каждому клиенту. Рекомендуем начать с BIM-аудита, который поможет определить оптимальный путь внедрения и оценить бюджет.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Какое программное обеспечение для BIM вы рекомендуете?</div>
+                <div class="faq-answer">
+                    <p>Выбор ПО зависит от специфики вашей деятельности. Наиболее популярные решения: Autodesk Revit, ArchiCAD, Bentley Systems, Tekla Structures. Мы поможем подобрать оптимальный набор инструментов, учитывая ваши потребности и бюджет.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2>Контакты</h2>
+            <p>Готовы начать работу с BIM? Свяжитесь с нами для консультации.</p>
+            <a href="mailto:info@bim-resheniya.ru" class="btn">Написать нам</a>
+        </section>
+
+        <section class="section">
+            <h2>Содержание сайта</h2>
+            <ul>
+                <li><a href="#home">Главная</a> - Введение в BIM технологии</li>
+                <li><a href="#about">О BIM</a> - Основная информация о Building Information Modeling</li>
+                <li><a href="#projects">Проекты</a> - Примеры наших реализованных проектов</li>
+                <li><a href="#services">Услуги</a> - Перечень предоставляемых BIM-услуг</li>
+                <li><a href="#faq">FAQ</a> - Ответы на часто задаваемые вопросы</li>
+                <li><a href="#contact">Контакты</a> - Как с нами связаться</li>
+            </ul>
+        </section>
+    </div>
+
+    <!-- Модальное окно для изображений -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <footer>
+        <ul class="footer-links">
+            <li><a href="#">Политика конфиденциальности</a></li>
+            <li><a href="#">Условия использования</a></li>
+            <li><a href="#">Вакансии</a></li>
+            <li><a href="#">Блог</a></li>
+            <li><a href="https://maximka567.github.io/AI_Web/">Партнёр №1</a>
+            <li><a href="https://vk.com/tim.uniory">Партнёр №2</a>
+        </ul>
+        <p class="copyright">© 2023 BIM Решения. Все права защищены.</p>
+    </footer>
+
+    <!-- Three.js и другие скрипты -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/loaders/GLTFLoader.js"></script>
+
+    <script>
+        // 3D модель с Three.js
+        let scene, camera, renderer, controls;
+        let archModel, structModel, mepModel;
+
+        function init3DModel() {
+            // Создаем сцену
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf5f5f5);
+
+            // Создаем камеру
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(5, 5, 5);
+
+            // Создаем рендерер
+            const container = document.getElementById('bim-model');
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            container.appendChild(renderer.domElement);
+
+            // Добавляем управление
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.25;
+
+            // Освещение
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 20, 10);
+            scene.add(directionalLight);
+
+            // Загрузка моделей
+            const loader = new THREE.GLTFLoader();
+
+            // Архитектура (синий)
+            loader.load('models/architecture.gltf', (gltf) => {
+                archModel = gltf.scene;
+                archModel.traverse(child => {
+                    if (child.isMesh) {
+                        child.material = new THREE.MeshPhongMaterial({
+                            color: 0xbae5ff,
+                            transparent: true,
+                            opacity: 0.8
+                        });
+                    }
+                });
+                archModel.name = 'arch';
+                scene.add(archModel);
+            }, undefined, (error) => {
+                console.error('Ошибка загрузки архитектурной модели', error);
+                createPlaceholderModel('arch', 0xbae5ff, 0);
+            });
+
+            // Конструктив (белый каркас)
+            loader.load('models/structure.gltf', (gltf) => {
+                structModel = gltf.scene;
+                structModel.position.x = 1.5;
+                structModel.traverse(child => {
+                    if (child.isMesh) {
+                        child.material = new THREE.MeshPhongMaterial({
+                            color: 0xffffff,
+                            wireframe: true
+                        });
+                    }
+                });
+                structModel.name = 'struct';
+                scene.add(structModel);
+            }, undefined, (error) => {
+                console.error('Ошибка загрузки конструктивной модели', error);
+                createPlaceholderModel('struct', 0xffffff, 1.5);
+            });
+
+            // Инженерия (чёрный)
+            loader.load('models/mep.gltf', (gltf) => {
+                mepModel = gltf.scene;
+                mepModel.position.x = -1.5;
+                mepModel.traverse(child => {
+                    if (child.isMesh) {
+                        child.material = new THREE.MeshPhongMaterial({
+                            color: 0x000000,
+                            wireframe: false
+                        });
+                    }
+                });
+                mepModel.name = 'mep';
+                scene.add(mepModel);
+            }, undefined, (error) => {
+                console.error('Ошибка загрузки инженерной модели', error);
+                createPlaceholderModel('mep', 0x000000, -1.5);
+            });
+
+            // Анимация
+            function animate() {
+                requestAnimationFrame(animate);
+                controls.update();
+                renderer.render(scene, camera);
+            }
+
+            animate();
+
+            // Обработка изменения размера окна
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function createPlaceholderModel(name, color, xPos) {
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const material = new THREE.MeshPhongMaterial({
+                color: color,
+                wireframe: name === 'struct',
+                transparent: name === 'arch',
+                opacity: name === 'arch' ? 0.8 : 1
+            });
+            const cube = new THREE.Mesh(geometry, material);
+            cube.position.x = xPos;
+            cube.name = name;
+            scene.add(cube);
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('bim-model');
+            camera.aspect = container.offsetWidth / container.offsetHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+        }
+
+        function toggleVisibility(modelType) {
+            scene.traverse(child => {
+                if (child.name === modelType) {
+                    child.visible = !child.visible;
+                }
+            });
+        }
+
+        function resetCamera() {
+            controls.reset();
+            camera.position.set(5, 5, 5);
+            controls.update();
+        }
+
+        // Функционал модального окна
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.style.display = "block";
+            modalImg.src = imageSrc;
+        }
+
+        function closeModal() {
+            document.getElementById('imageModal').style.display = "none";
+        }
+
+        // Закрытие модального окна при клике вне изображения
+        window.onclick = function (event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Функционал FAQ
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            question.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+
+        // Инициализация 3D модели после загрузки страницы
+        window.addEventListener('load', init3DModel);
+    </script>
+</body>
+</html>
